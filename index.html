@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neomaia Ink | Fine Line Tattoo Artistry</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "surface-container":"#201f1f","on-surface-variant":"#c4c7c8",
+                    "surface-container-highest":"#353434","primary":"#ffffff",
+                    "surface-container-high":"#2a2a2a","on-surface":"#e5e2e1",
+                    "surface":"#141313","background":"#0c0b0b",
+                    "surface-bright":"#3a3939","surface-container-lowest":"#0e0e0e"
+                },
+                spacing:{"margin-mobile":"24px","container-max":"1440px","margin-desktop":"80px","gutter":"32px"},
+                fontFamily:{
+                    "display":["Bodoni Moda"],"headline":["Bodoni Moda"],
+                    "body":["Hanken Grotesk"],"label":["Hanken Grotesk"]
+                },
+            }
+        }
+    }
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Hanken Grotesk',sans-serif;background:#0c0b0b;color:#e5e2e1;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+/* Noise overlay */
+body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* Cursor */
+@media(pointer:fine){body{cursor:none}}
+.cursor{width:32px;height:32px;border:1px solid rgba(255,255,255,0.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:difference}
+.cursor.h{width:56px;height:56px;background:rgba(255,255,255,0.06)}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+.rv.v{opacity:1;transform:translateY(0)}
+.rv-left{opacity:0;transform:translateX(-40px);transition:opacity .8s ease,transform .8s ease}
+.rv-left.v{opacity:1;transform:translateX(0)}
+.rv-right{opacity:0;transform:translateX(40px);transition:opacity .8s ease,transform .8s ease}
+.rv-right.v{opacity:1;transform:translateX(0)}
+.rv-scale{opacity:0;transform:scale(0.92);transition:opacity .8s ease,transform .8s ease}
+.rv-scale.v{opacity:1;transform:scale(1)}
+
+/* Section divider */
+.divider{width:40px;height:1px;background:rgba(255,255,255,0.12);margin:0 auto}
+
+/* ── HERO ─────────────────────────── */
+.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;will-change:opacity,transform;filter:grayscale(100%) brightness(0.28)}
+.hero-slide.active{opacity:1;animation:kb 3.5s ease-out forwards}
+.hero-slide.prev{animation:fadeOut .8s ease forwards}
+@keyframes kb{0%{transform:scale(1.1);opacity:0}12%{opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes fadeOut{to{opacity:0}}
+.hero-progress{position:absolute;bottom:0;left:0;height:2px;background:rgba(255,255,255,0.5);z-index:20}
+@keyframes prog{from{width:0}to{width:100%}}
+
+/* ── HORIZONTAL GALLERY STRIP ─────── */
+.hstrip{display:flex;gap:12px;animation:scrollStrip 35s linear infinite;width:max-content;-webkit-overflow-scrolling:touch}
+.hstrip:hover{animation-play-state:paused}
+@keyframes scrollStrip{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.hstrip-item{flex-shrink:0;width:200px;height:280px;overflow:hidden;position:relative;border-radius:4px}
+.hstrip-item img{width:100%;height:100%;object-fit:cover;filter:grayscale(60%) brightness(0.7);transition:filter .5s,transform .5s}
+.hstrip-item:hover img{filter:grayscale(0%) brightness(0.9);transform:scale(1.05)}
+@media(min-width:768px){.hstrip-item{width:340px;height:450px;border-radius:0}
+.hstrip{gap:16px}}
+
+/* ── 3D CAROUSEL ──────────────────── */
+.c-scene{perspective:1200px;width:100%;height:400px;position:relative;display:flex;justify-content:center;align-items:center;overflow:hidden;margin-bottom:40px;touch-action:pan-y}
+@media(min-width:768px){.c-scene{height:600px;margin-bottom:50px}}
+.c-wrap{width:100%;height:100%;position:absolute;transform-style:preserve-3d;display:flex;justify-content:center;align-items:center}
+.c-item{position:absolute;width:200px;height:270px;transition:all .7s cubic-bezier(.25,1,.25,1);transform-style:preserve-3d;cursor:pointer;border-radius:10px}
+@media(min-width:768px){.c-item{width:340px;height:440px;border-radius:12px}}
+.c-item img{width:100%;height:100%;object-fit:cover;border-radius:inherit;box-shadow:0 16px 32px rgba(0,0,0,.8);transition:all .7s cubic-bezier(.25,1,.25,1);filter:grayscale(80%) brightness(.5) blur(3px)}
+.c-item.active{z-index:10}
+.c-item.active img{filter:grayscale(10%) brightness(1) blur(0);box-shadow:0 0 50px rgba(255,255,255,.08),0 24px 48px rgba(0,0,0,.9);border:1px solid rgba(255,255,255,.15)}
+.c-floor{position:absolute;bottom:-200px;left:0;width:100%;height:400px;background:linear-gradient(to bottom,rgba(12,11,11,0) 0%,#0c0b0b 70%);z-index:20;pointer-events:none}
+.c-info{text-align:center;margin-top:-20px;position:relative;z-index:30;opacity:0;transform:translateY(20px);transition:all .5s ease;padding:0 20px}
+@media(min-width:768px){.c-info{margin-top:-30px}}
+.c-info.vis{opacity:1;transform:translateY(0)}
+.c-nav{position:absolute;top:50%;left:0;width:100%;display:flex;justify-content:space-between;padding:0 3%;transform:translateY(-50%);z-index:40;pointer-events:none}
+.c-nav button{pointer-events:auto;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(12,11,11,.6);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;backdrop-filter:blur(4px)}
+@media(min-width:768px){.c-nav button{width:44px;height:44px}.c-nav{padding:0 4%}}
+.c-nav button:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.3)}
+.c-dots{display:flex;gap:10px;justify-content:center;margin-top:16px;position:relative;z-index:40}
+@media(min-width:768px){.c-dots{margin-top:20px}}
+.c-dots .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15);cursor:pointer;transition:all .4s;-webkit-tap-highlight-color:transparent}
+.c-dots .dot.a{background:rgba(255,255,255,.8);transform:scale(1.4);box-shadow:0 0 6px rgba(255,255,255,.3)}
+
+/* ── PARALLAX BREAK ───────────────── */
+.parallax-break{height:40vh;min-height:280px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:20px}
+@media(min-width:768px){.parallax-break{height:50vh;min-height:350px}}
+.parallax-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:grayscale(100%) brightness(0.25)}
+@media(min-width:768px){.parallax-bg{inset:-20%;background-attachment:fixed}}
+
+/* ── PROCESS ──────────────────────── */
+.process-step{text-align:center;padding:24px 12px;position:relative}
+@media(min-width:768px){.process-step{padding:40px 20px}}
+.process-step::after{content:'';position:absolute;top:36px;right:-50%;width:100%;height:1px;background:linear-gradient(to right,rgba(255,255,255,.1),transparent);pointer-events:none;display:none}
+@media(min-width:768px){.process-step::after{display:block}}
+.process-step:last-child::after{display:none}
+.process-icon{width:52px;height:52px;border:1px solid rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;transition:border-color .3s,background .3s}
+@media(min-width:768px){.process-icon{width:64px;height:64px;margin-bottom:20px}}
+.process-step:hover .process-icon{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.03)}
+
+/* ── REVIEWS ──────────────────────── */
+.review-scroll{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;padding:0 20px;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.review-scroll::-webkit-scrollbar{display:none}
+@media(min-width:768px){.review-scroll{gap:24px;padding:0 80px}}
+.review-card{flex-shrink:0;width:220px;height:310px;border:1px solid rgba(255,255,255,.06);overflow:hidden;transition:transform .5s,border-color .3s;background:#141313;scroll-snap-align:center;border-radius:4px}
+.review-card:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.15)}
+.review-card img{width:100%;height:100%;object-fit:cover;filter:brightness(.85);transition:filter .4s}
+.review-card:hover img{filter:brightness(1)}
+@media(min-width:768px){.review-card{width:300px;height:400px;border-radius:0}}
+
+/* ── INSTAGRAM GRID ───────────────── */
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+@media(min-width:768px){.ig-grid{grid-template-columns:repeat(6,1fr);gap:6px}}
+.ig-cell{aspect-ratio:1;overflow:hidden;position:relative}
+.ig-cell img{width:100%;height:100%;object-fit:cover;filter:grayscale(40%) brightness(.7);transition:filter .4s,transform .4s}
+.ig-cell:hover img{filter:grayscale(0%) brightness(.95);transform:scale(1.08)}
+.ig-cell::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.15);transition:background .3s;pointer-events:none}
+.ig-cell:hover::after{background:transparent}
+
+/* ── IG GLOW CTA ──────────────────── */
+.ig-glow{text-shadow:0 0 40px rgba(255,255,255,.12);transition:text-shadow .4s}
+.ig-glow:hover{text-shadow:0 0 60px rgba(255,255,255,.25),0 0 120px rgba(255,255,255,.08)}
+
+/* ── FULLSCREEN SLIDESHOW ─────────── */
+.fs{position:fixed;inset:0;z-index:200;background:#0a0a0a;display:none;flex-direction:column;opacity:0;transition:opacity .4s}
+.fs.open{display:flex}.fs.vis{opacity:1}
+.fs-img-wrap{flex:1;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:60px 10px 10px;touch-action:pan-x}
+@media(min-width:768px){.fs-img-wrap{padding:70px 20px 10px}}
+.fs-img{max-width:100%;max-height:70vh;object-fit:contain;transition:opacity .45s,transform .45s}
+@media(min-width:768px){.fs-img{max-width:92%;max-height:78vh}}
+.fs-img.sw{opacity:0;transform:scale(.96) translateX(20px)}
+.fs-prog-track{width:100%;height:3px;background:rgba(255,255,255,.06);position:absolute;bottom:0;left:0;z-index:10}
+.fs-prog-bar{height:100%;background:rgba(255,255,255,.4);width:0}
+.fs-prog-bar.an{animation:fsProg 3.5s linear forwards}
+@keyframes fsProg{from{width:0}to{width:100%}}
+.fs-thumbs{display:flex;gap:4px;padding:8px 10px;overflow-x:auto;justify-content:flex-start;background:rgba(0,0,0,.5);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+@media(min-width:768px){.fs-thumbs{gap:6px;padding:10px 16px;justify-content:center}}
+.fs-thumbs::-webkit-scrollbar{display:none}
+.fs-th{flex-shrink:0;width:44px;height:44px;border:2px solid transparent;cursor:pointer;opacity:.35;transition:all .3s;overflow:hidden;border-radius:2px;-webkit-tap-highlight-color:transparent}
+.fs-th.a{border-color:#fff;opacity:1}.fs-th:hover{opacity:.7}
+.fs-th img{width:100%;height:100%;object-fit:cover}
+@media(min-width:768px){.fs-th{width:68px;height:68px}}
+
+/* Scrollbar hide & touch utilities */
+.no-scroll::-webkit-scrollbar{display:none}
+.no-scroll{scrollbar-width:none}
+
+/* Safe area insets for notched phones */
+@supports(padding-bottom:env(safe-area-inset-bottom)){
+  .fs-thumbs{padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+  footer{padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+}
+</style>
+</head>
+<body>
+<div class="cursor hidden md:block" id="cur"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav class="fixed top-0 w-full z-50 bg-[#0c0b0b]/70 backdrop-blur-2xl border-b border-white/[0.05] flex justify-between items-center px-4 md:px-margin-desktop h-16 md:h-20 transition-all">
+  <a class="font-display text-[28px] md:text-[32px] text-white tracking-tighter" data-h href="#">NEOMAIA INK</a>
+  <div class="hidden md:flex items-center gap-8">
+    <a class="text-[#c4c7c8] text-[11px] font-semibold tracking-[.15em] uppercase hover:text-white transition-colors" data-h href="#gallery">Gallery</a>
+    <a class="text-[#c4c7c8] text-[11px] font-semibold tracking-[.15em] uppercase hover:text-white transition-colors" data-h href="#designs">Collections</a>
+    <a class="text-[#c4c7c8] text-[11px] font-semibold tracking-[.15em] uppercase hover:text-white transition-colors" data-h href="#process">Process</a>
+    <a class="text-[#c4c7c8] text-[11px] font-semibold tracking-[.15em] uppercase hover:text-white transition-colors" data-h href="#reviews">Reviews</a>
+  </div>
+  <a href="https://www.instagram.com/neomaia.ink/" target="_blank" class="hidden md:inline-flex items-center gap-2 bg-white text-black text-[11px] font-semibold tracking-[.12em] uppercase px-5 py-2.5 hover:bg-gray-200 transition-all" data-h>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    Book via DM
+  </a>
+  <button class="md:hidden text-white" id="mmBtn" data-h><span class="material-symbols-outlined">menu</span></button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="fixed inset-0 z-[60] bg-[#0c0b0b]/98 backdrop-blur-xl hidden flex-col items-center justify-center gap-10" id="mm">
+  <button class="absolute top-6 right-6 text-white" id="mmClose"><span class="material-symbols-outlined text-[28px]">close</span></button>
+  <a class="font-display text-[28px] text-white uppercase tracking-wider" href="#gallery" onclick="cmm()">Gallery</a>
+  <a class="font-display text-[28px] text-white uppercase tracking-wider" href="#designs" onclick="cmm()">Collections</a>
+  <a class="font-display text-[28px] text-white uppercase tracking-wider" href="#process" onclick="cmm()">Process</a>
+  <a class="font-display text-[28px] text-white uppercase tracking-wider" href="#reviews" onclick="cmm()">Reviews</a>
+  <a class="font-display text-[28px] text-white uppercase tracking-wider" href="https://www.instagram.com/neomaia.ink/" target="_blank">Instagram</a>
+</div>
+
+<main>
+<!-- ═══════════════════════════════════════════════ -->
+<!-- HERO                                            -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="relative w-full h-screen flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 z-0" id="heroSlides"></div>
+  <div class="absolute inset-0 z-[1] bg-gradient-to-b from-[#0c0b0b]/60 via-[#0c0b0b]/15 to-[#0c0b0b]"></div>
+  <div class="absolute inset-0 z-[1] bg-gradient-to-r from-[#0c0b0b]/25 via-transparent to-[#0c0b0b]/25"></div>
+  <div class="hero-progress" id="heroProg"></div>
+
+  <div class="relative z-10 flex flex-col items-center text-center w-[94%] max-w-3xl bg-white/[0.03] backdrop-blur-2xl border border-white/[0.06] p-6 md:p-16 mt-14 md:mt-16">
+    <p class="text-[9px] md:text-[11px] font-semibold tracking-[.3em] md:tracking-[.35em] uppercase text-white/40 mb-4 md:mb-6">Est. 2024 · Los Angeles, CA</p>
+    <h1 class="font-display text-[42px] md:text-[80px] lg:text-[96px] text-white tracking-tighter leading-[0.95] uppercase mb-4 md:mb-5">Neomaia<br/>Ink</h1>
+    <div class="w-8 h-px bg-white/15 mb-4 md:mb-5"></div>
+    <p class="text-[11px] md:text-[14px] tracking-[.2em] md:tracking-[.3em] uppercase text-white/50 mb-8 md:mb-10 font-light">Fine Line · Floral · Custom Tattoos</p>
+    <div class="flex flex-col sm:flex-row gap-4">
+      <button class="border border-white/20 text-white text-[11px] font-semibold tracking-[.15em] uppercase px-8 py-3.5 hover:bg-white/[0.05] transition-all" data-h onclick="document.getElementById('designs').scrollIntoView({behavior:'smooth'})">Explore Work</button>
+      <a href="https://www.instagram.com/neomaia.ink/" target="_blank" class="bg-white text-black text-[11px] font-semibold tracking-[.12em] uppercase px-8 py-3.5 hover:bg-gray-200 transition-all text-center inline-flex items-center justify-center gap-2" data-h>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        Book Session
+      </a>
+    </div>
+  </div>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce opacity-30">
+    <span class="material-symbols-outlined text-white text-[18px]">expand_more</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- HORIZONTAL GALLERY STRIP                        -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="py-12 md:py-24 overflow-hidden border-t border-white/[0.04]" id="gallery">
+  <div class="text-center mb-8 md:mb-12 rv px-6">
+    <p class="text-[9px] md:text-[10px] font-semibold tracking-[.3em] md:tracking-[.35em] uppercase text-white/30 mb-3">Selected Works</p>
+    <h2 class="font-display text-[28px] md:text-[40px] text-white uppercase tracking-tighter mb-3">Recent Ink</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="overflow-hidden">
+    <div class="hstrip" id="hstrip"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- ABOUT SECTION                                   -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="py-16 md:py-32 px-5 md:px-margin-desktop border-t border-white/[0.04]">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center">
+    <!-- Image side -->
+    <div class="rv-left relative">
+      <div class="aspect-[4/5] md:aspect-[3/4] overflow-hidden border border-white/[0.06]">
+        <img id="aboutImg" class="w-full h-full object-cover filter grayscale brightness-75 hover:grayscale-0 hover:brightness-90 transition-all duration-700" alt="" loading="lazy"/>
+      </div>
+      <div class="absolute -bottom-3 -right-3 md:-bottom-4 md:-right-4 w-16 h-16 md:w-24 md:h-24 border border-white/[0.08]"></div>
+    </div>
+    <!-- Text side -->
+    <div class="rv-right">
+      <p class="text-[9px] md:text-[10px] font-semibold tracking-[.3em] md:tracking-[.35em] uppercase text-white/30 mb-3 md:mb-4">The Artist</p>
+      <h2 class="font-display text-[30px] md:text-[48px] text-white uppercase tracking-tighter leading-[1.05] mb-4 md:mb-6">Where Skin<br/>Meets Art</h2>
+      <div class="w-8 h-px bg-white/15 mb-4 md:mb-6"></div>
+      <p class="text-[13px] md:text-[15px] leading-[1.7] md:leading-[1.8] text-white/50 mb-5 md:mb-6">
+        Every tattoo at Neomaia Ink begins as a conversation — a story waiting to be etched into skin. Specializing in fine line, floral, and custom designs, each piece is crafted with obsessive attention to detail and a deep respect for the art of tattooing.
+      </p>
+      <p class="text-[13px] md:text-[15px] leading-[1.7] md:leading-[1.8] text-white/50 mb-6 md:mb-8">
+        From delicate botanicals to bold custom pieces, the studio is a sanctuary where precision meets creativity. Every line is intentional. Every design, personal.
+      </p>
+      <!-- Stats row -->
+      <div class="flex gap-8 md:gap-14">
+        <div>
+          <p class="font-display text-[28px] md:text-[36px] text-white tracking-tight">500+</p>
+          <p class="text-[9px] md:text-[10px] tracking-[.2em] uppercase text-white/30 mt-1">Pieces Done</p>
+        </div>
+        <div>
+          <p class="font-display text-[28px] md:text-[36px] text-white tracking-tight">5★</p>
+          <p class="text-[9px] md:text-[10px] tracking-[.2em] uppercase text-white/30 mt-1">Rated</p>
+        </div>
+        <div>
+          <p class="font-display text-[28px] md:text-[36px] text-white tracking-tight">LA</p>
+          <p class="text-[9px] md:text-[10px] tracking-[.2em] uppercase text-white/30 mt-1">Based</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PARALLAX BREAK                                  -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="parallax-break">
+  <div class="parallax-bg" id="paraBg1"></div>
+  <div class="absolute inset-0 bg-black/50 z-[1]"></div>
+  <div class="relative z-[2] text-center px-6">
+    <p class="font-display text-[22px] md:text-[44px] text-white/90 italic tracking-tight leading-snug max-w-2xl mx-auto">"Every line tells a story.<br/>Every tattoo is a chapter."</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CURATED COLLECTIONS (3D CAROUSEL)               -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="py-16 md:py-32 overflow-hidden" id="designs">
+  <div class="text-center mb-4 md:mb-6 rv px-6">
+    <p class="text-[10px] font-semibold tracking-[.35em] uppercase text-white/30 mb-3">Tap to Explore</p>
+    <h2 class="font-display text-[32px] md:text-[40px] text-white uppercase tracking-tighter mb-3">Collections</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="c-scene">
+    <div class="c-wrap" id="cWrap"></div>
+    <div class="c-floor"></div>
+    <div class="c-nav">
+      <button data-h id="cPrev"><span class="material-symbols-outlined text-[20px]">chevron_left</span></button>
+      <button data-h id="cNext"><span class="material-symbols-outlined text-[20px]">chevron_right</span></button>
+    </div>
+  </div>
+  <div class="c-info" id="cInfo">
+    <h3 class="font-display text-[28px] md:text-[32px] text-white uppercase tracking-tighter mb-1" id="cTitle"></h3>
+    <p class="text-[10px] tracking-[.2em] uppercase text-white/35 mb-5" id="cCount"></p>
+    <button class="border border-white/12 text-white text-[11px] font-semibold tracking-[.15em] uppercase px-6 py-2.5 hover:bg-white/[0.05] transition-all rounded-full" id="cExplore" data-h>View Collection</button>
+    <div class="c-dots" id="cDots"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PROCESS                                         -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="py-16 md:py-32 px-5 md:px-margin-desktop border-t border-white/[0.04]" id="process">
+  <div class="text-center mb-10 md:mb-16 rv">
+    <p class="text-[10px] font-semibold tracking-[.35em] uppercase text-white/30 mb-3">How It Works</p>
+    <h2 class="font-display text-[32px] md:text-[40px] text-white uppercase tracking-tighter mb-3">The Process</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-4">
+    <div class="process-step rv">
+      <div class="process-icon"><span class="material-symbols-outlined text-white/50 text-[28px]">chat</span></div>
+      <h4 class="font-display text-[18px] text-white uppercase tracking-tight mb-2">Consult</h4>
+      <p class="text-[12px] text-white/35 leading-relaxed">Share your vision via DM. We discuss size, placement &amp; style.</p>
+    </div>
+    <div class="process-step rv" style="transition-delay:.1s">
+      <div class="process-icon"><span class="material-symbols-outlined text-white/50 text-[28px]">draw</span></div>
+      <h4 class="font-display text-[18px] text-white uppercase tracking-tight mb-2">Design</h4>
+      <p class="text-[12px] text-white/35 leading-relaxed">A custom design crafted uniquely for you. Revisions until perfect.</p>
+    </div>
+    <div class="process-step rv" style="transition-delay:.2s">
+      <div class="process-icon"><span class="material-symbols-outlined text-white/50 text-[28px]">brush</span></div>
+      <h4 class="font-display text-[18px] text-white uppercase tracking-tight mb-2">Ink</h4>
+      <p class="text-[12px] text-white/35 leading-relaxed">Precision tattooing in a calm, studio environment.</p>
+    </div>
+    <div class="process-step rv" style="transition-delay:.3s">
+      <div class="process-icon"><span class="material-symbols-outlined text-white/50 text-[28px]">favorite</span></div>
+      <h4 class="font-display text-[18px] text-white uppercase tracking-tight mb-2">Heal</h4>
+      <p class="text-[12px] text-white/35 leading-relaxed">Detailed aftercare guidance for a flawless, lasting result.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- SECOND PARALLAX BREAK                           -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="parallax-break">
+  <div class="parallax-bg" id="paraBg2"></div>
+  <div class="absolute inset-0 bg-black/60 z-[1]"></div>
+  <div class="relative z-[2] text-center px-6">
+    <p class="text-[10px] font-semibold tracking-[.35em] uppercase text-white/40 mb-3">Client Words</p>
+    <p class="font-display text-[20px] md:text-[36px] text-white/80 italic tracking-tight leading-snug max-w-xl mx-auto">"Healed perfectly. The lines are as sharp today as they were six months ago."</p>
+    <p class="text-[11px] tracking-[.2em] uppercase text-white/30 mt-5">— James L.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- REVIEWS                                         -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="py-16 md:py-32" id="reviews">
+  <div class="px-5 md:px-margin-desktop">
+    <div class="text-center mb-10 md:mb-14 rv">
+      <p class="text-[10px] font-semibold tracking-[.35em] uppercase text-white/30 mb-3">Real Feedback</p>
+      <h2 class="font-display text-[32px] md:text-[40px] text-white uppercase tracking-tighter mb-3">Client Reviews</h2>
+      <div class="divider"></div>
+    </div>
+  </div>
+  <div class="relative">
+    <div class="absolute left-0 top-0 bottom-0 w-10 md:w-20 bg-gradient-to-r from-[#0c0b0b] to-transparent z-10 pointer-events-none"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-10 md:w-20 bg-gradient-to-l from-[#0c0b0b] to-transparent z-10 pointer-events-none"></div>
+    <div class="review-scroll rv" id="revStrip"></div>
+  </div>
+  <div class="text-center mt-8 rv">
+    <p class="text-[10px] tracking-[.2em] uppercase text-white/20 flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-[12px]">swipe</span> Scroll to see more
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- INSTAGRAM GRID                                  -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="border-t border-white/[0.04]">
+  <div class="text-center py-12 md:py-16 rv px-6">
+    <p class="text-[9px] md:text-[10px] font-semibold tracking-[.3em] md:tracking-[.35em] uppercase text-white/30 mb-3">Follow Along</p>
+    <a href="https://www.instagram.com/neomaia.ink/" target="_blank" class="ig-glow font-display text-[28px] md:text-[56px] text-white uppercase tracking-tighter inline-block hover:opacity-80 transition-opacity" data-h>@neomaia.ink</a>
+  </div>
+  <div class="ig-grid" id="igGrid"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CTA                                             -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="py-20 md:py-36 px-5 md:px-margin-desktop text-center border-t border-white/[0.04]">
+  <div class="max-w-2xl mx-auto rv">
+    <h2 class="font-display text-[30px] md:text-[56px] text-white uppercase tracking-tighter leading-[1] mb-5 md:mb-6">Ready for<br/>Your Piece?</h2>
+    <div class="w-8 h-px bg-white/15 mx-auto mb-5 md:mb-6"></div>
+    <p class="text-[12px] md:text-[13px] text-white/40 mb-8 md:mb-10 max-w-md mx-auto leading-relaxed">Send a DM on Instagram with your idea, preferred placement, and size. Let's create something beautiful together.</p>
+    <a href="https://www.instagram.com/neomaia.ink/" target="_blank" class="inline-flex items-center gap-2 bg-white text-black text-[11px] font-semibold tracking-[.12em] uppercase px-10 py-4 hover:bg-gray-200 transition-all" data-h>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      Send a DM
+    </a>
+  </div>
+</section>
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="w-full py-14 bg-[#0c0b0b] border-t border-white/[0.04] flex flex-col items-center gap-6 px-6">
+  <a class="font-display text-[24px] text-white/40 tracking-tighter hover:text-white/70 transition-colors" href="#">NEOMAIA INK</a>
+  <div class="flex items-center gap-5 text-[10px] tracking-[.2em] uppercase">
+    <a class="text-white/25 hover:text-white/60 transition-colors" data-h href="https://www.instagram.com/neomaia.ink/" target="_blank">Instagram</a>
+    <span class="text-white/10">·</span>
+    <a class="text-white/25 hover:text-white/60 transition-colors" data-h href="#">Privacy</a>
+    <span class="text-white/10">·</span>
+    <a class="text-white/25 hover:text-white/60 transition-colors" data-h href="#">Terms</a>
+  </div>
+  <p class="text-[10px] text-white/15 tracking-[.2em] uppercase">© 2024 Neomaia Ink</p>
+</footer>
+
+<!-- ═══ FULLSCREEN SLIDESHOW ═══ -->
+<div class="fs" id="fs">
+  <div class="flex justify-between items-center px-5 md:px-10 py-4 bg-black/50 backdrop-blur-lg z-10 absolute top-0 left-0 right-0">
+    <h3 class="font-display text-[20px] md:text-[24px] text-white uppercase tracking-tighter" id="fsTitle"></h3>
+    <div class="flex items-center gap-4">
+      <button class="text-white/40 hover:text-white transition-colors flex items-center gap-1 text-[11px] tracking-[.1em] uppercase" id="fsAutoBtn" data-h>
+        <span class="material-symbols-outlined text-[16px]" id="fsAutoIcon">pause</span>
+        <span class="hidden sm:inline" id="fsAutoLbl">Auto</span>
+      </button>
+      <span class="text-[10px] tracking-[.15em] text-white/30" id="fsCtr">1 / 10</span>
+      <button class="text-white/60 hover:text-white transition-colors" data-h onclick="closeFs()">
+        <span class="material-symbols-outlined text-[22px]">close</span>
+      </button>
+    </div>
+  </div>
+  <div class="fs-img-wrap" id="fsArea">
+    <img class="fs-img" id="fsImg" src="" alt=""/>
+    <button class="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-black/40 border border-white/10 text-white/60 hover:text-white hover:bg-black/60 transition-all rounded-full" data-h id="fsPrev"><span class="material-symbols-outlined">chevron_left</span></button>
+    <button class="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-black/40 border border-white/10 text-white/60 hover:text-white hover:bg-black/60 transition-all rounded-full" data-h id="fsNext"><span class="material-symbols-outlined">chevron_right</span></button>
+    <div class="fs-prog-track"><div class="fs-prog-bar" id="fsProg"></div></div>
+  </div>
+  <div class="fs-thumbs" id="fsThumbs"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- SCRIPT                                          -->
+<!-- ═══════════════════════════════════════════════ -->
+<script>
+const P='public/tattoo-assets';
+
+const heroImgs=[
+  `${P}/gallery-downloads/3807318127332428069_3807318108785227837.jpg`,
+  `${P}/gallery-downloads/3826918347213041381_3826912340357336527.jpg`,
+  `${P}/gallery-downloads/3826918347213041381_3826912354450153694.jpg`,
+  `${P}/gallery-downloads/3831338115101809328_3831330995690187583.jpg`,
+  `${P}/gallery-downloads/3841215341251140780_3841204370562517861.jpg`,
+  `${P}/gallery-downloads/3841215341251140780_3841204372995191636.jpg`,
+  `${P}/gallery-downloads/3841215341251140780_3841204375520205930.jpg`,
+  `${P}/gallery-downloads/3842190741326431978_3842187707686986514.jpg`,
+  `${P}/gallery-downloads/3860920289354506785_3860919348807443212.jpg`,
+  `${P}/gallery-downloads/3865362738009012562_3865362548250267075.jpg`,
+  `${P}/gallery-downloads/3865362738009012562_3865362549248548928.jpg`,
+  `${P}/gallery-downloads/3867464824893119083.jpg`,
+  `${P}/gallery-downloads/3880551715494050414_3880546099253921983.jpg`,
+  `${P}/gallery-downloads/3893551148029219014_3893545998111392122.jpg`,
+  `${P}/gallery-downloads/3893551148029219014_3893546014074914124.jpg`,
+  `${P}/gallery-downloads/3900125363695444587_3900122663950635717.jpg`,
+  `${P}/gallery-downloads/3900125363695444587_3900122667289397659.jpg`,
+  `${P}/gallery-downloads/3900125363695444587_3900122705600174666.jpg`,
+];
+
+const cats=[
+  {t:'Floral Tattoos',f:`${P}/highlights/Floral Tattoos`,imgs:[
+    'Screenshot 2026-06-18 171359.png','Screenshot 2026-06-18 171506.png','Screenshot 2026-06-18 171528.png',
+    'Screenshot 2026-06-18 171540.png','Screenshot 2026-06-18 171604.png','Screenshot 2026-06-18 171619.png',
+    'Screenshot 2026-06-18 171656.png','Screenshot 2026-06-18 171720.png','Screenshot 2026-06-18 171740.png',
+    'Screenshot 2026-06-18 171807.png']},
+  {t:'Mini Tattoos',f:`${P}/highlights/Mini Tattoos`,imgs:[
+    'Screenshot 2026-06-18 165053.png','Screenshot 2026-06-18 165150.png','Screenshot 2026-06-18 165216.png',
+    'Screenshot 2026-06-18 165250.png','Screenshot 2026-06-18 165314.png','Screenshot 2026-06-18 165453.png',
+    'Screenshot 2026-06-18 165514.png','Screenshot 2026-06-18 165532.png','Screenshot 2026-06-18 165546.png',
+    'Screenshot 2026-06-18 165607.png','Screenshot 2026-06-18 165621.png','Screenshot 2026-06-18 165743.png',
+    'Screenshot 2026-06-18 165951.png','Screenshot 2026-06-18 170141.png','Screenshot 2026-06-18 170157.png',
+    'Screenshot 2026-06-18 170212.png','Screenshot 2026-06-18 170231.png','Screenshot 2026-06-18 170251.png',
+    'Screenshot 2026-06-18 170319.png','Screenshot 2026-06-18 170342.png','Screenshot 2026-06-18 170402.png']},
+  {t:'Healed',f:`${P}/highlights/Healed`,imgs:[
+    'Screenshot 2026-06-18 171215.png','Screenshot 2026-06-18 171242.png','Screenshot 2026-06-18 171300.png',
+    'Screenshot 2026-06-18 171319.png','Screenshot 2026-06-18 171337.png','Screenshot 2026-06-18 171042.png',
+    'Screenshot 2026-06-18 171108.png','Screenshot 2026-06-18 171126.png','Screenshot 2026-06-18 171136.png',
+    'Screenshot 2026-06-18 171200.png']},
+  {t:'New Designs',f:`${P}/highlights/New Design`,imgs:[
+    '550658459_17948136252022185_899083507428327363_n.jpg','559584365_17949624315022185_3206627485620370570_n.jpg',
+    '565063861_17951864601022185_1232593831219244725_n.jpg','590401158_17956769052022185_6203171400968788895_n.jpg',
+    '611682705_17960301492022185_7306172566554571337_n.jpg','638278665_17965684917022185_1902971507750471564_n.jpg',
+    '658186010_17970476529022185_7705433082852174312_n.jpg']},
+  {t:'Colorful Tattoos',f:`${P}/highlights/Colorful Tattoos`,imgs:[
+    'Screenshot 2026-06-18 172027.png','Screenshot 2026-06-18 172059.png','Screenshot 2026-06-18 172113.png',
+    'Screenshot 2026-06-18 172133.png','Screenshot 2026-06-18 172206.png']},
+];
+
+const revImgs=[
+  'Screenshot 2026-06-18 170506.png','Screenshot 2026-06-18 170526.png','Screenshot 2026-06-18 170544.png',
+  'Screenshot 2026-06-18 170607.png','Screenshot 2026-06-18 170627.png','Screenshot 2026-06-18 170642.png',
+  'Screenshot 2026-06-18 170707.png','Screenshot 2026-06-18 170723.png','Screenshot 2026-06-18 170741.png',
+  'Screenshot 2026-06-18 170852.png','Screenshot 2026-06-18 170912.png','Screenshot 2026-06-18 170927.png',
+  'Screenshot 2026-06-18 170946.png','Screenshot 2026-06-18 171013.png',
+];
+
+// Collect all category images for strips/grids
+const allCatImgs=[];
+cats.forEach(c=>c.imgs.forEach(i=>allCatImgs.push(`${c.f}/${i}`)));
+
+// ── HERO ────────────────────────────────────────
+(function(){
+  const el=document.getElementById('heroSlides'),pr=document.getElementById('heroProg');
+  const INT=3500;
+  heroImgs.forEach((s,i)=>{const d=document.createElement('div');d.className='hero-slide'+(i===0?' active':'');d.style.backgroundImage=`url('${s}')`;el.appendChild(d)});
+  const sl=el.querySelectorAll('.hero-slide');let c=0;
+  pr.style.animation=`prog ${INT}ms linear forwards`;
+  setInterval(()=>{sl[c].classList.remove('active');sl[c].classList.add('prev');setTimeout(()=>sl[c===0?sl.length-1:c-1].classList.remove('prev'),800);c=(c+1)%sl.length;sl[c].classList.add('active');pr.style.animation='none';pr.offsetHeight;pr.style.animation=`prog ${INT}ms linear forwards`},INT);
+})();
+
+// ── HORIZONTAL GALLERY STRIP ────────────────────
+(function(){
+  const el=document.getElementById('hstrip');
+  // Use a mix of gallery + category images, duplicated for infinite scroll
+  const pool=[...heroImgs.slice(0,8),...allCatImgs.slice(0,12)];
+  const doubled=[...pool,...pool]; // duplicate for seamless loop
+  doubled.forEach(src=>{
+    const d=document.createElement('div');d.className='hstrip-item';d.setAttribute('data-h','');
+    const img=document.createElement('img');img.src=src;img.alt='';img.loading='lazy';
+    d.appendChild(img);el.appendChild(d);
+  });
+})();
+
+// ── ABOUT IMAGE ─────────────────────────────────
+document.getElementById('aboutImg').src=heroImgs[5];
+
+// ── PARALLAX BACKGROUNDS ────────────────────────
+document.getElementById('paraBg1').style.backgroundImage=`url('${heroImgs[11]}')`;
+document.getElementById('paraBg2').style.backgroundImage=`url('${heroImgs[7]}')`;
+
+// ── 3D CAROUSEL ─────────────────────────────────
+const cW=document.getElementById('cWrap'),cT=document.getElementById('cTitle'),cCt=document.getElementById('cCount');
+const cI=document.getElementById('cInfo'),cD=document.getElementById('cDots');
+let ci=Math.floor(cats.length/2),ap;
+
+cats.forEach((c,i)=>{
+  const d=document.createElement('div');d.className='c-item'+(i===ci?' active':'');d.dataset.index=i;
+  const img=document.createElement('img');img.alt=c.t;img.src=`${c.f}/${c.imgs[0]}`;img.loading='lazy';
+  d.appendChild(img);d.addEventListener('click',()=>{if(ci===i)openFs(i);else goTo(i)});cW.appendChild(d);
+  const dot=document.createElement('div');dot.className='dot'+(i===ci?' a':'');
+  dot.addEventListener('click',()=>goTo(i));cD.appendChild(dot);
+});
+
+const cItems=document.querySelectorAll('.c-item'),cDots=document.querySelectorAll('.dot');
+
+function upC(idx){
+  cItems.forEach((it,i)=>{it.classList.remove('active');const o=i-idx;
+    let x=o*170,z=Math.abs(o)*-140,ry=o*-22,sc=1-Math.abs(o)*.1,op=1-Math.abs(o)*.25;
+    if(Math.abs(o)>2){op=0;sc=.5}
+    it.style.transform=`translateX(${x}px) translateZ(${z}px) rotateY(${ry}deg) scale(${sc})`;
+    it.style.opacity=op;it.style.zIndex=cItems.length-Math.abs(o);
+    if(i===idx){it.classList.add('active');it.style.transform=`translateX(0) translateZ(50px) rotateY(0) scale(1.08)`}
+  });
+  cI.classList.remove('vis');
+  setTimeout(()=>{cT.innerText=cats[idx].t;cCt.innerText=`${cats[idx].imgs.length} pieces`;cI.classList.add('vis')},250);
+  cDots.forEach((d,i)=>d.classList.toggle('a',i===idx));
+}
+function goTo(i){if(ci!==i){ci=i;upC(ci);rAp()}}
+document.getElementById('cPrev').addEventListener('click',()=>{ci=(ci-1+cItems.length)%cItems.length;upC(ci);rAp()});
+document.getElementById('cNext').addEventListener('click',()=>{ci=(ci+1)%cItems.length;upC(ci);rAp()});
+document.getElementById('cExplore').addEventListener('click',()=>openFs(ci));
+function sAp(){ap=setInterval(()=>{ci=(ci+1)%cItems.length;upC(ci)},5000)}
+function rAp(){clearInterval(ap);sAp()}
+const sc=document.querySelector('.c-scene');
+sc.addEventListener('mouseenter',()=>clearInterval(ap));sc.addEventListener('mouseleave',sAp);
+let tsx=0;sc.addEventListener('touchstart',e=>{tsx=e.changedTouches[0].clientX},{passive:true});
+sc.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tsx;if(Math.abs(d)>50){d<0?goTo((ci+1)%cItems.length):goTo((ci-1+cItems.length)%cItems.length)}},{passive:true});
+if(cItems.length){upC(ci);setTimeout(()=>cI.classList.add('vis'),500);sAp()}
+
+// ── FULLSCREEN SLIDESHOW ────────────────────────
+const fs=document.getElementById('fs'),fsImg=document.getElementById('fsImg'),fsTh=document.getElementById('fsThumbs');
+const fsCtr=document.getElementById('fsCtr'),fsTit=document.getElementById('fsTitle'),fsPr=document.getElementById('fsProg');
+let fsI=[],fsC=0,fsAp=null,fsAuto=true;
+
+function openFs(ci){
+  const c=cats[ci];fsI=c.imgs.map(f=>`${c.f}/${f}`);fsC=0;fsTit.innerText=c.t;
+  fsTh.innerHTML='';fsI.forEach((s,i)=>{
+    const t=document.createElement('div');t.className='fs-th'+(i===0?' a':'');
+    const img=document.createElement('img');img.src=s;img.alt='';img.loading='lazy';
+    t.appendChild(img);t.addEventListener('click',()=>fsGo(i));fsTh.appendChild(t);
+  });
+  showFs(0);fs.classList.add('open');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>fs.classList.add('vis')));
+  document.body.style.overflow='hidden';clearInterval(ap);
+  fsAuto=true;updAutoUI();startFsAp();
+}
+
+function showFs(i){
+  fsC=i;fsImg.classList.add('sw');
+  setTimeout(()=>{fsImg.src=fsI[i];fsImg.classList.remove('sw')},220);
+  fsCtr.innerText=`${i+1} / ${fsI.length}`;
+  fsTh.querySelectorAll('.fs-th').forEach((t,j)=>t.classList.toggle('a',j===i));
+  const at=fsTh.querySelector('.fs-th.a');if(at)at.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+  fsPr.classList.remove('an');void fsPr.offsetWidth;if(fsAuto)fsPr.classList.add('an');
+}
+function fsGo(i){showFs(i);if(fsAuto)rFsAp()}
+function startFsAp(){fsAp=setInterval(()=>showFs((fsC+1)%fsI.length),3500)}
+function rFsAp(){clearInterval(fsAp);startFsAp()}
+function togFsAp(){fsAuto=!fsAuto;if(fsAuto){startFsAp();fsPr.classList.add('an')}else{clearInterval(fsAp);fsPr.classList.remove('an')}updAutoUI()}
+function updAutoUI(){document.getElementById('fsAutoIcon').innerText=fsAuto?'pause':'play_arrow';document.getElementById('fsAutoLbl').innerText=fsAuto?'Auto':'Paused'}
+document.getElementById('fsAutoBtn').addEventListener('click',togFsAp);
+document.getElementById('fsPrev').addEventListener('click',()=>fsGo((fsC-1+fsI.length)%fsI.length));
+document.getElementById('fsNext').addEventListener('click',()=>fsGo((fsC+1)%fsI.length));
+function closeFs(){clearInterval(fsAp);fs.classList.remove('vis');setTimeout(()=>fs.classList.remove('open'),400);document.body.style.overflow='';sAp()}
+document.addEventListener('keydown',e=>{if(fs.classList.contains('open')){if(e.key==='Escape')closeFs();if(e.key==='ArrowLeft')fsGo((fsC-1+fsI.length)%fsI.length);if(e.key==='ArrowRight')fsGo((fsC+1)%fsI.length);if(e.key===' '){e.preventDefault();togFsAp()}}});
+let ftx=0;document.getElementById('fsArea').addEventListener('touchstart',e=>{ftx=e.changedTouches[0].clientX},{passive:true});
+document.getElementById('fsArea').addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-ftx;if(Math.abs(d)>50){d<0?fsGo((fsC+1)%fsI.length):fsGo((fsC-1+fsI.length)%fsI.length)}},{passive:true});
+
+// ── REVIEWS ─────────────────────────────────────
+(function(){const s=document.getElementById('revStrip');revImgs.forEach(n=>{const c=document.createElement('div');c.className='review-card';c.setAttribute('data-h','');const img=document.createElement('img');img.src=`${P}/Reviews/${n}`;img.alt='';img.loading='lazy';c.appendChild(img);s.appendChild(c)})})();
+
+// ── INSTAGRAM GRID ──────────────────────────────
+(function(){
+  const g=document.getElementById('igGrid');
+  // Use a mix of all category images for the grid (12 cells on desktop, 9 on mobile)
+  const pool=[...allCatImgs].sort(()=>Math.random()-.5).slice(0,12);
+  pool.forEach(src=>{
+    const d=document.createElement('div');d.className='ig-cell';d.setAttribute('data-h','');
+    const a=document.createElement('a');a.href='https://www.instagram.com/neomaia.ink/';a.target='_blank';a.rel='noopener';
+    const img=document.createElement('img');img.src=src;img.alt='';img.loading='lazy';
+    a.appendChild(img);d.appendChild(a);g.appendChild(d);
+  });
+})();
+
+// ── CURSOR ──────────────────────────────────────
+const cur=document.getElementById('cur');
+if(cur&&window.matchMedia("(pointer:fine)").matches){
+  let mx=0,my=0,cx=0,cy=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  (function l(){cx+=(mx-cx)*.15;cy+=(my-cy)*.15;cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(l)})();
+  function bh(r){r.querySelectorAll('[data-h],.c-item').forEach(e=>{if(!e._b){e.addEventListener('mouseenter',()=>cur.classList.add('h'));e.addEventListener('mouseleave',()=>cur.classList.remove('h'));e._b=1}})}
+  bh(document);new MutationObserver(()=>bh(document)).observe(document.body,{childList:true,subtree:true});
+}
+
+// ── SCROLL REVEAL ───────────────────────────────
+const ob=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');ob.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.rv,.rv-left,.rv-right,.rv-scale').forEach(e=>ob.observe(e));
+
+// ── MOBILE MENU ─────────────────────────────────
+const mm=document.getElementById('mm');
+document.getElementById('mmBtn').addEventListener('click',()=>{mm.classList.remove('hidden');mm.style.display='flex'});
+document.getElementById('mmClose').addEventListener('click',cmm);
+function cmm(){mm.classList.add('hidden');mm.style.display=''}
+</script>
+</body></html>
